@@ -33,8 +33,7 @@ for j in range (n):                                       # loop for each trajec
      P0.append(1)
      P1.append(0)
      k = g                                                      
-     KE = 0.5*mp*(v[0]**2)
-     a.append(vv.accel(x[0],surface,V,H))
+     a.append(vv.accel(x[0],k,V,dH))
      t.append(0)
     
 
@@ -47,10 +46,10 @@ for j in range (n):                                       # loop for each trajec
 
 # final conditiona
           tf = t[m-1]+dt
-          xf =vv.verlet_pos(xi,vi,dt,k,V,H)
-          vf =vv.verlet_vel(xi,xf,vi,dt,k,V,H)
-          x1_2 = vv.verlet_pos(xi,vi,dt/2,k,V,H)
-          v1_2 =vv.verlet_vel(xi,x1_2,vi,dt/2,k,V,H)
+          xf =vv.verlet_pos(xi,vi,dt,k,V,dH)
+          vf =vv.verlet_vel(xi,xf,vi,dt,k,V,dH)
+          x1_2 = vv.verlet_pos(xi,vi,dt/2,k,V,dH)
+          v1_2 =vv.verlet_vel(xi,x1_2,vi,dt/2,k,V,dH)
           C0 = RK4.Ck(Co,xi,x1_2,xf,vi,v1_2,vf,0,dt,V,d)
           C1 = RK4.Ck(Co,xi,x1_2,xf,vi,v1_2,vf,1,dt,V,d)
           Co = np.array([C0,C1])
@@ -67,15 +66,14 @@ for j in range (n):                                       # loop for each trajec
      #     RK4.RK4()
      
      
-          if x[m] > 10:
-               break
-          elif x[m] < -10:
-               break
-     plt.figure(1)
-     plt.subplot(212)
-     plt.plot(x,t,label='x_%i' % j)
-     plt.xlabel('x')
-     plt.ylabel('t')
+          #if x[m] > 10:
+              # break
+          #elif x[m] < -10:
+              # break
+     #plt.figure(1)
+     #plt.subplot(212)
+     #plt.plot(x,t)
+     
      
      
      if j == 0:
@@ -86,11 +84,11 @@ for j in range (n):                                       # loop for each trajec
                P0av[i] = P0av[i]+P0[i]
                P1av[i]=P1av[i]+P1[i]
 for i in range(len(P0av)):
-     P0av[i]=P0av[i]/n
-     P1av[i] = P1av[i]/n
+     P0av[i]=  P0av[i]/n
+     P1av[i]= P1av[i]/n
 
-plt.figure(1)
-plt.subplot(211)
+#plt.figure(1)
+#plt.subplot(211)
 plt.plot(t,P0av,label='P0')
 plt.plot(t,P1av,label ='P1')
 #plt.plot(t,norm)
