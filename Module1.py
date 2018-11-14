@@ -1,23 +1,22 @@
 import numpy as np
-import RK4
-import InitPos as guass
-import Dual_avoided_crossing as PE
-import Verlet_Velocity as vv
+import RK4                                                  # importing RK4 method and diff equaion
+import InitPos as guass                                     # import guassian disrubition 
+import Simple_avoided_crossing as PE                        # importing our potential surface 
+import Verlet_Velocity as vv                                # importing out Verlet Velocity module 
 import matplotlib.pyplot as plt
 
 
-mp =1                                                       #mass of particle
+                                                    
 dt = 1                                                      # time step
 alpha = 0.25; sigr = np.sqrt(1/(2*alpha)); r0 =-7; n = 10   # gauss distrubution 
 g = 0                                                       # ground state
-e =1
-                                                            # excited state
-V = PE.Vmatrix
-H = PE.dHmatrix
-d = PE.dmatrix
+e =1                                                        # excited state
+V = PE.Vmatrix                                              # potential matrix 
+dH = PE.dHmatrix                                            # derivative of potential matrix 
+d = PE.dmatrix                                               #coupling matrix 
 
-P0av =[]
-P1av =[]
+P0av =[]                                                  # "average population" of ground state (not entirely correct)
+P1av =[]                                                  # average poulation" of excited state (not entirely correct)
 for j in range (n):                                       # loop for each trajectory  
      x = []
      v = []
@@ -30,15 +29,14 @@ for j in range (n):                                       # loop for each trajec
      Co = np.array([1,0])
      
      x.append(np.random.choice(guass.ipos(r0,sigr,n)))     
-     v.append(10/2000)
+     v.append(.1)
      P0.append(1)
      P1.append(0)
-     surface = e                                                      
+     k = g                                                      
      KE = 0.5*mp*(v[0]**2)
      a.append(vv.accel(x[0],surface,V,H))
      t.append(0)
-     k =0
-     norm.append(1)
+    
 
 #loop will be replaced/scrapped later
      
@@ -69,17 +67,16 @@ for j in range (n):                                       # loop for each trajec
      #     RK4.RK4()
      
      
-          #if x[m] > 10:
-               #break
-          #elif x[m] < -10:
-               #break
-     #plt.figure(1)
-     #plt.subplot(212)
-     #plt.plot(x,t,label='x_%i' % j)
-     #plt.xlabel('x')
-     #plt.ylabel('t')
-     #plt.figure(1)
-     #plt.subplot(211)
+          if x[m] > 10:
+               break
+          elif x[m] < -10:
+               break
+     plt.figure(1)
+     plt.subplot(212)
+     plt.plot(x,t,label='x_%i' % j)
+     plt.xlabel('x')
+     plt.ylabel('t')
+     
      
      if j == 0:
           P0av = P0
@@ -92,7 +89,8 @@ for i in range(len(P0av)):
      P0av[i]=P0av[i]/n
      P1av[i] = P1av[i]/n
 
-     
+plt.figure(1)
+plt.subplot(211)
 plt.plot(t,P0av,label='P0')
 plt.plot(t,P1av,label ='P1')
 #plt.plot(t,norm)
