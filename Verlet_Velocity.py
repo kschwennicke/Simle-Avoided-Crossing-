@@ -4,7 +4,7 @@ import numpy as np
 mp =1 #mass of particle 
    
 def Force(x,k,V,dH):                   # Force at position x and surface k, considering the potential and derivative of the hamiltonian
-     eigval,eigvect = np.linalg.eigh(V(x))
+     eigval,eigvect = np.linalg.eigh(V(x)) # finding eig funcions of V 
      f = - eigvect[:,k].transpose()@ dH(x) @ eigvect[:,k]
      return np.asscalar(f)
 
