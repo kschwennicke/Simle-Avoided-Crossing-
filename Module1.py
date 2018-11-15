@@ -53,8 +53,10 @@ for j in range (n):                                       # loop for each trajec
           C0 = RK4.Ck(Co,xi,x1_2,xf,vi,v1_2,vf,0,dt,V,d)
           C1 = RK4.Ck(Co,xi,x1_2,xf,vi,v1_2,vf,1,dt,V,d)
           Co = np.array([C0,C1])
-          p0 = C0.real**2+C0.imag**2
-          p1 = C1.real**2+C1.imag**2
+          w = np.linalg.eigvalsh(V(xf))
+          U = np.matrix.([[w[0],0],[0,w[1]])
+          p0 = U[0,0]*Co[0]*np.conj(U[0,0]*Co[0])+U[0,1]*Co[1]*np.conj(U[0,1]*Co[1])
+          p1 = U[1,0]*Co[0]*np.conj(U[0,0]*Co[0])+U[0,1]*Co[1]*np.conj(U[1,1]*Co[1])
           norm.append( p0+p1)
           P0.append(p0)
           P1.append(p1)
